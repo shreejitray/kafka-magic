@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Kafka Magic</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+    <script src="./controller.js"></script>
+</head>
+
+<body ng-app="app">
+<h1>Kafka Magic</h1>
+<div ng-controller="cntlr">
+    <h3>{{response}}</h3>
+    <h3>{{response1}}</h3>
+    <input type="text" ng-model="hostname" placeholder="Host name"/><br>
+    <input type="text" ng-model="port" placeholder="Port"/><br>
+    <input type="text" ng-model="topic" placeholder="topic"/><br>
+    <input type="text" ng-model="message" placeholder="Message"/><br>
+    <button type="button" ng-click="sendMessage()">Send Message</button>
+
+</div>
+</body>
+</html>
