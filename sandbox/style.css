@@ -1,0 +1,17 @@
+table{
+    width:100%
+}
+th{
+    display: inline-block;
+    width: 48%;
+}
+td{
+    text-align: center;
+    height: 100px;
+    overflow: scroll;
+    display: inline-block;
+    width: 48%;
+}
+li{
+    border-bottom: 1px solid blue;
+}

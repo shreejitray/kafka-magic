@@ -2,13 +2,13 @@ var kafka = require('kafka-node')
 
 Producer = kafka.Producer
 KeyedMessage = kafka.KeyedMessage
-client = new kafka.KafkaClient({kafkaHost: 'localhost:9092'})
+client = new kafka.KafkaClient({kafkaHost: 'invitekafka.stg.tesmdm.prod.walmart.com:9092'})
 
 producer = new Producer(client)
 
 payloads = [
     {
-        topic: 'test',messages:'message from node'
+        topic: 'EIM.PC.PARTNER.INVITATION.OUT',messages:'message from node'
     }
 ]
 

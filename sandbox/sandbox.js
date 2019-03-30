@@ -17,16 +17,16 @@
 // //offset.fetchLatestOffsets(['test'],display)
 // offset.fetchCommits('test1',[{topic:'test_1'}],display)
 
-kafkaUtility = require('./kafkaUtility')
+kafkaUtility = require('../main/kafkaUtility')
 
 config = {
-    host:'kafka-270894369-4-319526618.prod-dfw.kafka-cluster-shared-prod.ms-df-messaging.dfw7.prod.walmart.com',
-    port:'9092',
-    topic:'EIM.PC.PARTNER.STATUS.OUT',
-    group:'partner_invite_event'
+    host:'invitekafka.stg.tesmdm.prod.walmart.com:9092',
+    topic:'EIM.PC.PARTNER.INVITATION.OUT',
+    group:'partner_invite_event',
+    message:'something'
 }
 
-kafkaUtility.clusterDetail( config).then((data)=>{
+kafkaUtility.sendMessage(config).then((data)=>{
     console.log(JSON.stringify(data, null, 1))
 },(err) => {
     console.log(JSON.stringify(err,null,1))

@@ -2,7 +2,7 @@
   "name": "kafka-magic",
   "version": "0.0.0",
   "private": true,
-  "main": "main/mark2",
+  "main": "main/mark3",
   "scripts": {
     "start": "electron ."
   },

@@ -1,20 +1,40 @@
 body {
-    background-color: beige;
+    /*background: url("./background.jpg");*/
+    /*background-repeat: no-repeat;*/
+    /*background-size: cover;*/
+    /*height: 100%;*/
+
 }
 
-li {
-    cursor: pointer;
-}
 table.detail{
+    width:100%
 }
-td.detail {
-    border: 1px solid black;
+th.detail{
     display: inline-block;
-    max-height: 150px;
+    width: 48%;
+    /*border: 2px solid darkolivegreen;*/
+    /*border-top: 0px;*/
+}
+td.detail{
+    text-align: center;
+    height: 100px;
     overflow: scroll;
-
+    display: inline-block;
+    width: 48%;
+}
+ul{
+    list-style-type:none;
+}
+li.detail{
+    cursor: pointer;
+    border-left: 1px solid dodgerblue;
+    border-bottom: 1px solid dodgerblue;
+    margin-bottom: 12px;
 }
 
-td.detailHeading {
+input.hostname{
+    border-top: 0px;
+    border-color: dodgerblue;
+    width: 500px;
     text-align: center;
 }

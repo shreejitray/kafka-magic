@@ -1,15 +1,14 @@
 const {remote,ipcRenderer} = require('electron');
+const ipcMain = remote.ipcMain
 
 angular.module('app',[]).controller('cntlr',controller);
 
 function controller($scope) {
-    $scope.host='invitekafka.stg.tesmdm.prod.walmart.com'
-    $scope.port='9092'
+    $scope.host='invitekafka.stg.tesmdm.prod.walmart.com:9092'
 
     $scope.fetchDetail = function(){
         config = {
             host:$scope.host,
-            port:$scope.port,
             topic:$scope.topic
         }
 
@@ -38,7 +37,6 @@ function controller($scope) {
     $scope.fetchMoreDetails = function(){
         config = {
             host:$scope.host,
-            port:$scope.port,
             topic:$scope.topic
         }
         config.topic = $scope.topics[$scope.selectedTopic]
@@ -46,14 +44,46 @@ function controller($scope) {
             config.group = $scope.consumers[$scope.selectedConsumer]
             response = ipcRenderer.sendSync('consumerDetails',config)
             if(response!= undefined && response.err == undefined){
-                $scope.showMoreDetails=true
+                $scope.showMoreTopicDetails=false
+                $scope.showMoreConsumerDetails=true
                 $scope.offsets = response
             }
         }else{
             response = ipcRenderer.sendSync('topicDetails',config)
+            if(response!= undefined && response.err == undefined){
+                $scope.showMoreTopicDetails=true
+                $scope.showMoreConsumerDetails=false
+                $scope.offsets = response
+            }
         }
         response = ipcRenderer.sendSync('fetchClusterDetails', config)
     }
 
+    $scope.sendMessage = function(){
+        currentWindow = remote.getCurrentWindow();
+        sendWindow = new remote.BrowserWindow(
+            {
+                width:400,
+                height:400,
+                parent:currentWindow
+            }
+        )
+        sendWindow.loadFile('views/publish/main.html')
 
+        sendWindow.on('closed',function(){
+            sendWindow=null
+        })
+    }
+    ipcMain.on('fetchConfig',(event,arg)=>{
+        config={
+            host:$scope.host,
+            topic:$scope.topics[$scope.selectedTopic]
+        }
+        event.returnValue= config
+    })
+
+    // ipcMain.on('sendMessage',(event,config)=>{
+    //     response = ipcRenderer.sendSync('sendMessage',config)
+    //     event.returnValue= response
+    // })
 }

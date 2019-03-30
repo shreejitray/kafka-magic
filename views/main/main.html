@@ -8,13 +8,12 @@
     <link rel="stylesheet" href="../style/main.css">
 </head>
 <body ng-app="app">
-<h1>Kafka Magic</h1>
+<h1 align="center">Kafka Magic</h1>
 <div ng-controller="cntlr">
     <table border="0" align="center">
         <tr>
             <td>
-                <input type="text" placeholder="hostname" ng-model="host"/>
-                <input type="text" placeholder="port" ng-model="port"/>
+                <input class="hostname" type="text" placeholder="hostname" ng-model="host"/>
             </td>
         </tr>
         <tr>
@@ -23,16 +22,17 @@
             </td>
         </tr>
     </table>
+    <hr>
     <div ng-if="(consumers != undefined) && (topics != undefined)">
         <table align="center" class="detail">
             <tr>
-                <td class="detailHeading"><b>Consumers</b></td>
-                <td class="detailHeading"><b>Topics</b></td>
+                <th class="detail"><u>Consumers</u></th>
+                <th class="detail"><u>Topics</u></th>
             </tr>
             <tr>
                 <td class="detail">
                     <ul>
-                        <li ng-repeat="consumer in consumers">
+                        <li class="detail" ng-repeat="consumer in consumers">
                             <div ng-click="selectConsumer($index)">
                                 <span>{{consumer}}</span>
                             </div>
@@ -41,7 +41,7 @@
                 </td>
                 <td class="detail">
                     <ul>
-                        <li ng-repeat="topic in topics">
+                        <li class="detail" ng-repeat="topic in topics">
                             <div ng-click="selectTopic($index)">
                                 <span>{{topic}}</span>
                             </div>
@@ -52,6 +52,7 @@
             </tr>
         </table>
     </div>
+    <hr>
     <div ng-if="(consumers != undefined) && (topics != undefined)">
         <table border ="0" align="center">
             <tr ng-if="showConsumer">
@@ -66,18 +67,33 @@
             <tr>
                 <td align="center">
                     <button type="button" ng-click="fetchMoreDetails()">More Details</button>
+                    <button type="button" ng-click="sendMessage()">Send Message</button>
                 </td>
             </tr>
         </table>
-        <div ng-if="showMoreDetails">
+        <div ng-if="showMoreConsumerDetails">
             <table border="2" align="center">
                 <tr>
-                    <td><h2>Partition</h2></td>
-                    <td><h2>Lag</h2></td>
+                    <th><u>Partition</u></th>
+                    <th><u>Offset</u></th>
+                    <th><u>Lag</u></th>
                 </tr>
                 <tr ng-repeat="offset in offsets">
                     <td>{{offset.partition}}</td>
+                    <td>{{offset.offset}}</td>
                     <td>{{offset.lag}}</td>
+                </tr>
+            </table>
+        </div>
+        <div ng-if="showMoreTopicDetails">
+            <table border="2" align="center">
+                <tr>
+                    <th><u>Partition</u></th>
+                    <th><u>Offset</u></th>
+                </tr>
+                <tr ng-repeat="offset in offsets">
+                    <td>{{offset.partition}}</td>
+                    <td>{{offset.offset}}</td>
                 </tr>
             </table>
         </div>

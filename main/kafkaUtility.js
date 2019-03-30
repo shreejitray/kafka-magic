@@ -2,22 +2,20 @@ const kafka = require('kafka-node')
 
 function sendMessage(config){
     return new Promise((resolve, reject)=>{
-        client = new kafka.KafkaClient({kafkaHost: `${config.host}:${config.port}`})
-        let producer = new Producer(client)
+
+        client = new kafka.KafkaClient({kafkaHost: config.host})
+        producer = new kafka.Producer(client)
         payloads = [
             {
                 topic: config.topic ,messages:config.message
             }
         ]
         producer.on('ready', function () {
+            console.log("producer ready")
             producer.send(payloads, function (err, data) {
                 if(err){
-                    client = null
-                    producer = null
                     reject({Error:err})
                 }else {
-                    client = null
-                    producer = null
                     console.log('message sent')
                     console.log(data)
                     resolve({message: "Message sent successfully"})
@@ -27,10 +25,8 @@ function sendMessage(config){
 
 
         producer.on('error', function (err) {
-            client = null
-            producer = null
-            console.log('error sending message');
-            console.log(err)
+            // console.log('error sending message');
+            // console.log(err)
             reject({err:"Message not sent"})
         })
     })
@@ -38,7 +34,7 @@ function sendMessage(config){
 
 function clusterDetail(config){
     return new Promise((resolve, reject) => {
-        client = new kafka.KafkaClient({kafkaHost: `${config.host}:${config.port}`})
+        client = new kafka.KafkaClient({kafkaHost: `${config.host}`})
         consumerGroups =[]
 
         admin = new kafka.Admin(client)
@@ -77,7 +73,7 @@ function clusterDetail(config){
 
 function topicDetail(config){
     return new Promise((resolve, reject) => {
-        client = new kafka.KafkaClient({kafkaHost: `${config.host}:${config.port}`})
+        client = new kafka.KafkaClient({kafkaHost: `${config.host}`})
         offset = new kafka.Offset(client)
         offset.fetchLatestOffsets([config.topic], (err, data) => {
             if(err){
@@ -97,7 +93,7 @@ function topicDetail(config){
 function consumerDetail(config){
     return new Promise((resolve, reject) => {
         topicDetail(config).then(topicOffsets => {
-            client = new kafka.KafkaClient({kafkaHost: `${config.host}:${config.port}`})
+            client = new kafka.KafkaClient({kafkaHost: `${config.host}`})
             offset = new kafka.Offset(client)
             offset.fetchCommits(config.group,[{topic:config.topic}],(err,data)=>{
                 if(err){

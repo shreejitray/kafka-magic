@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Sandbox</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+    <script src="controller.js"></script>
+    <link rel="stylesheet" href="style.css"/>
+</head>
+<body ng-app="app">
+<div ng-controller="cntlr">
+    <table>
+        <tbody>
+        <tr>
+            <th>List 1</th>
+            <th>List 2</th>
+        </tr>
+        <tr>
+            <td>
+                <ul>
+                    <li ng-repeat="item in list1">
+                        {{item}}
+                    </li>
+                </ul>
+            </td>
+            <td>
+                <ul>
+                    <li ng-repeat="item in list2">
+                        {{item}}
+                    </li>
+                </ul>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>
