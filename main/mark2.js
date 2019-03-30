@@ -1,8 +1,5 @@
 const {app, BrowserWindow, ipcMain} = require('electron')
-const kafka = require('kafka-node')
-
-let Producer = kafka.Producer
-let KeyedMessage = kafka.KeyedMessage
+const kafkaUtility = require('./kafkaUtility')
 
 let mainwindow
 
@@ -17,11 +14,11 @@ function startApplication(){
     mainwindow.on('closed',function(){
         mainwindow=null
     })
-    mainwindow.loadFile('views/main.html')
+    mainwindow.loadFile('views/main/main.html')
 }
 
 ipcMain.on('sendMessage',(event,config) =>{
-    sendMessage(config).then(response => {
+    kafkaUtility.sendMessage(config).then(response => {
         event.returnValue = response
     }, response => {
         event.returnValue=response
@@ -29,29 +26,29 @@ ipcMain.on('sendMessage',(event,config) =>{
 
 })
 
-function sendMessage(config){
-    return new Promise((resolve, reject)=>{
-        client = new kafka.KafkaClient({kafkaHost: `${config.host}:${config.port}`})
-        let producer = new Producer(client)
-        payloads = [
-            {
-                topic: config.topic ,messages:config.message
-            }
-        ]
-        producer.on('ready', function () {
-            producer.send(payloads, function (err, data) {
-                console.log('message sent')
-                console.log(data)
-                resolve({message:"Message sent successfully"})
-            });
-        });
-
-
-        producer.on('error', function (err) {
-            console.log('error sending message');
-            console.log(err)
-            reject({err:"Message not sent"})
-        })
+ipcMain.on('consumerDetails',(event,config) =>{
+    kafkaUtility.consumerDetail(config).then(response => {
+        event.returnValue = response
+    }, response => {
+        event.returnValue=response
     })
-}
+
+})
+
+ipcMain.on('fetchClusterDetails', (event, config) => {
+    kafkaUtility.clusterDetail(config).then(response => {
+        details = {
+            consumers:response.groups,
+            topics: response.topics
+        }
+
+        event.returnValue = {details: details}
+    }, response => {
+        event.returnValue = response
+    })
+})
 app.on('ready',startApplication)
+
+process.on('uncaughtException', function (error) {
+    console.log('error occured')
+})

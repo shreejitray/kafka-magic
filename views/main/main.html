@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Kafka Magic</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+    <script src="controller.js"></script>
+    <link rel="stylesheet" href="../style/main.css">
+</head>
+<body ng-app="app">
+<h1>Kafka Magic</h1>
+<div ng-controller="cntlr">
+    <table border="0" align="center">
+        <tr>
+            <td>
+                <input type="text" placeholder="hostname" ng-model="host"/>
+                <input type="text" placeholder="port" ng-model="port"/>
+            </td>
+        </tr>
+        <tr>
+            <td align="center">
+                <button type="button" ng-click="fetchDetail()">Fetch Detail</button><br><br>
+            </td>
+        </tr>
+    </table>
+    <div ng-if="(consumers != undefined) && (topics != undefined)">
+        <table align="center" class="detail">
+            <tr>
+                <td class="detailHeading"><b>Consumers</b></td>
+                <td class="detailHeading"><b>Topics</b></td>
+            </tr>
+            <tr>
+                <td class="detail">
+                    <ul>
+                        <li ng-repeat="consumer in consumers">
+                            <div ng-click="selectConsumer($index)">
+                                <span>{{consumer}}</span>
+                            </div>
+                        </li>
+                    </ul>
+                </td>
+                <td class="detail">
+                    <ul>
+                        <li ng-repeat="topic in topics">
+                            <div ng-click="selectTopic($index)">
+                                <span>{{topic}}</span>
+                            </div>
+
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div ng-if="(consumers != undefined) && (topics != undefined)">
+        <table border ="0" align="center">
+            <tr ng-if="showConsumer">
+                <td ><b>Selected Consumer:</b></td>
+                <td>{{consumers[selectedConsumer]}}</td>
+                <td><button type="button" ng-click="removeConsumer()">Remove</button></td>
+            </tr>
+            <tr>
+                <td><b>Selected Topic     :</b></td>
+                <td>{{topics[selectedTopic]}}</td>
+            </tr>
+            <tr>
+                <td align="center">
+                    <button type="button" ng-click="fetchMoreDetails()">More Details</button>
+                </td>
+            </tr>
+        </table>
+        <div ng-if="showMoreDetails">
+            <table border="2" align="center">
+                <tr>
+                    <td><h2>Partition</h2></td>
+                    <td><h2>Lag</h2></td>
+                </tr>
+                <tr ng-repeat="offset in offsets">
+                    <td>{{offset.partition}}</td>
+                    <td>{{offset.lag}}</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
+</body>
+</html>
